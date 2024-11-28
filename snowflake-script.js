@@ -1,9 +1,5 @@
-// Thêm CSS trực tiếp vào trang
+// Tự động thêm CSS
 const css = `
-/* Nội dung từ style.css */
-body {
-    background-color: black;
-}
 #container {
     position: absolute;
     top: 0;
@@ -33,7 +29,14 @@ const style = document.createElement('style');
 style.textContent = css;
 document.head.appendChild(style);
 
-// JavaScript từ script.js
+// Tự động thêm container
+if (!document.querySelector('#container')) {
+    const container = document.createElement('div');
+    container.id = 'container';
+    document.body.appendChild(container);
+}
+
+// Hiệu ứng tuyết rơi
 function createSnow() {
     const snowflake = document.createElement('div');
     snowflake.className = 'snow';
@@ -45,4 +48,5 @@ function createSnow() {
     setTimeout(() => snowflake.remove(), 10000);
 }
 
+// Tạo tuyết rơi liên tục
 setInterval(createSnow, 100);
