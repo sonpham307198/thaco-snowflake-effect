@@ -1,52 +1,73 @@
-// Tự động thêm CSS
+// Tạo và thêm CSS vào trang
 const css = `
-#container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-}
-.snow {
-    position: absolute;
-    top: -10px;
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall 10s linear infinite;
-}
-@keyframes fall {
-    to {
-        transform: translateY(100vh);
+    body {
+        margin: 0;
     }
-}
+    #container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .snow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        background-image: url('https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png');
+        background-size: cover;
+        animation: animationSnow 4s ease-in-out infinite;
+    }
+
+    @keyframes animationSnow {
+        0% {
+            transform: translate(0, 0);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translate(100px, 50vh);
+        }
+    }
 `;
+
+// Tạo và thêm thẻ style vào đầu tài liệu
 const style = document.createElement('style');
 style.textContent = css;
 document.head.appendChild(style);
 
-// Tự động thêm container
+// Tạo và thêm phần tử container vào body (nếu chưa có)
 if (!document.querySelector('#container')) {
     const container = document.createElement('div');
     container.id = 'container';
     document.body.appendChild(container);
 }
 
-// Hiệu ứng tuyết rơi
-function createSnow() {
-    const snowflake = document.createElement('div');
-    snowflake.className = 'snow';
-    snowflake.style.left = Math.random() * window.innerWidth + 'px';
-    snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
-    snowflake.style.opacity = Math.random();
-    snowflake.style.transform = `scale(${Math.random()})`;
-    document.getElementById('container').appendChild(snowflake);
-    setTimeout(() => snowflake.remove(), 10000);
-}
+// Tạo các bông tuyết và thêm vào container
+let container = document.getElementById('container');
+let count = 50;
+for (let i = 0; i < count; i++) {
+    let leftSnow = Math.floor(Math.random() * container.clientWidth);
+    let topSnow = Math.floor(Math.random() * container.clientHeight);
+    let widthSnow = Math.floor(Math.random() * 50);
+    let timeSnow = Math.floor((Math.random() * 5) + 5);
+    let blurSnow = Math.floor(Math.random() * 10);
 
-// Tạo tuyết rơi liên tục
-setInterval(createSnow, 100);
+    let div = document.createElement('div');
+    div.classList.add('snow');
+    div.style.left = leftSnow + 'px';
+    div.style.top = topSnow + 'px';
+    div.style.width = widthSnow + 'px';
+    div.style.height = widthSnow + 'px';
+    div.style.animationDuration = timeSnow + 's';
+    div.style.filter = "blur(" + blurSnow + "px)";
+    container.appendChild(div);
+}
