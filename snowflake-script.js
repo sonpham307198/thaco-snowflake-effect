@@ -1,74 +1,70 @@
-// Tạo CSS và thêm vào <head>
 (function () {
-    const style = document.createElement("style");
-    style.textContent = `
-    body {
-        margin: 0;
-        overflow: hidden;
-    }
-    #container {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .snow {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50px;
-        height: 50px;
-        background-image: url('https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png');
-        background-size: cover;
-        animation: animationSnow 4s ease-in-out infinite;
-    }
-    @keyframes animationSnow {
-        0% {
-            transform: translate(0, 0);
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-            transform: translate(100px, 50vh);
-        }
-    }
-    `;
-    document.head.appendChild(style);
+    // Tạo phần tử canvas
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.zIndex = '999999';
+    canvas.style.pointerEvents = 'none';
 
-    // Tạo HTML container
-    const container = document.createElement("div");
-    container.id = "container";
-    document.body.appendChild(container);
+    const ctx = canvas.getContext('2d');
 
-    // Tạo hiệu ứng tuyết rơi
-    function createSnowflakes() {
-        const count = 50; // Số lượng bông tuyết
-        for (let i = 0; i < count; i++) {
-            const leftSnow = Math.random() * window.innerWidth; // Vị trí ngang ngẫu nhiên
-            const topSnow = Math.random() * window.innerHeight; // Vị trí dọc ngẫu nhiên
-            const size = Math.random() * 50 + 10; // Kích thước ngẫu nhiên
-            const duration = Math.random() * 5 + 3; // Thời gian animation
-            const blur = Math.random() * 5; // Độ mờ
+    // Thiết lập kích thước canvas
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-            const snowflake = document.createElement("div");
-            snowflake.classList.add("snow");
-            snowflake.style.left = `${leftSnow}px`;
-            snowflake.style.top = `${topSnow}px`;
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.animationDuration = `${duration}s`;
-            snowflake.style.filter = `blur(${blur}px)`;
+    // Mảng lưu các bông tuyết
+    const snowflakes = [];
+    const maxSnowflakes = 100;
 
-            container.appendChild(snowflake);
-        }
+    // Tạo một bông tuyết
+    function createSnowflake() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 2,
+            speedX: Math.random() * 1 - 0.5,
+            speedY: Math.random() * 3 + 1,
+            opacity: Math.random() * 0.5 + 0.3,
+        };
     }
 
-    // Khởi tạo hiệu ứng tuyết khi trang tải xong
-    window.onload = createSnowflakes;
+    // Khởi tạo các bông tuyết ban đầu
+    for (let i = 0; i < maxSnowflakes; i++) {
+        snowflakes.push(createSnowflake());
+    }
+
+    // Vẽ và cập nhật vị trí các bông tuyết
+    function drawSnowflakes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        snowflakes.forEach((snowflake) => {
+            ctx.beginPath();
+            ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${snowflake.opacity})`;
+            ctx.fill();
+
+            // Cập nhật vị trí
+            snowflake.x += snowflake.speedX;
+            snowflake.y += snowflake.speedY;
+
+            // Nếu bông tuyết ra khỏi màn hình, đưa nó về lại phía trên
+            if (snowflake.y > canvas.height) {
+                snowflake.y = -snowflake.radius;
+                snowflake.x = Math.random() * canvas.width;
+            }
+            if (snowflake.x > canvas.width || snowflake.x < -snowflake.radius) {
+                snowflake.x = Math.random() * canvas.width;
+            }
+        });
+
+        requestAnimationFrame(drawSnowflakes);
+    }
+
+    drawSnowflakes();
 })();
