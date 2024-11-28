@@ -20,17 +20,23 @@
 
     // Mảng lưu các bông tuyết
     const snowflakes = [];
-    const maxSnowflakes = 100;
+    const maxSnowflakes = 50; // Số lượng bông tuyết
+
+    // Tải ảnh bông tuyết
+    const snowflakeImage = new Image();
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png';
 
     // Tạo một bông tuyết
     function createSnowflake() {
         return {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            radius: Math.random() * 3 + 2,
+            size: Math.random() * 30 + 10, // Kích thước ngẫu nhiên
             speedX: Math.random() * 1 - 0.5,
             speedY: Math.random() * 3 + 1,
-            opacity: Math.random() * 0.5 + 0.3,
+            opacity: Math.random() * 0.5 + 0.5,
+            rotation: Math.random() * 360, // Góc quay ban đầu
+            rotationSpeed: Math.random() * 2 - 1 // Tốc độ quay
         };
     }
 
@@ -44,21 +50,37 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         snowflakes.forEach((snowflake) => {
-            ctx.beginPath();
-            ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${snowflake.opacity})`;
-            ctx.fill();
+            // Lưu trạng thái gốc
+            ctx.save();
+
+            // Đặt vị trí và xoay hình ảnh
+            ctx.translate(snowflake.x, snowflake.y);
+            ctx.rotate((snowflake.rotation * Math.PI) / 180);
+            ctx.globalAlpha = snowflake.opacity;
+
+            // Vẽ hình ảnh bông tuyết
+            ctx.drawImage(
+                snowflakeImage,
+                -snowflake.size / 2,
+                -snowflake.size / 2,
+                snowflake.size,
+                snowflake.size
+            );
+
+            // Khôi phục trạng thái gốc
+            ctx.restore();
 
             // Cập nhật vị trí
             snowflake.x += snowflake.speedX;
             snowflake.y += snowflake.speedY;
+            snowflake.rotation += snowflake.rotationSpeed;
 
             // Nếu bông tuyết ra khỏi màn hình, đưa nó về lại phía trên
             if (snowflake.y > canvas.height) {
-                snowflake.y = -snowflake.radius;
+                snowflake.y = -snowflake.size;
                 snowflake.x = Math.random() * canvas.width;
             }
-            if (snowflake.x > canvas.width || snowflake.x < -snowflake.radius) {
+            if (snowflake.x > canvas.width || snowflake.x < -snowflake.size) {
                 snowflake.x = Math.random() * canvas.width;
             }
         });
@@ -66,5 +88,6 @@
         requestAnimationFrame(drawSnowflakes);
     }
 
-    drawSnowflakes();
+    // Chờ ảnh tải xong rồi mới bắt đầu
+    snowflakeImage.onload = drawSnowflakes;
 })();
