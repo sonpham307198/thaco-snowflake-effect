@@ -21,7 +21,7 @@
     resizeCanvas();
 
     const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png';
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
 
     function createSnowflake() {
         const isBlurred = Math.random() > 0.7;
