@@ -8,11 +8,15 @@
     canvas.style.pointerEvents = 'none';
 
     const ctx = canvas.getContext('2d');
-
-    let snowflakes = [];
+    const snowflakes = [];
     const maxSnowflakes = 50;
-    let lastScrollY = window.scrollY;
+    let lastTimestamp = 0;
 
+    // Load snowflake image
+    const snowflakeImage = new Image();
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
+
+    // Resize canvas
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -20,46 +24,63 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
-
+    // Create a snowflake
     function createSnowflake() {
         const isBlurred = Math.random() > 0.7;
         return {
             x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
+            y: Math.random() * canvas.height + window.scrollY,
             size: Math.random() * 30 + 10,
-            speedY: Math.random() * 3 + 1, // Tốc độ ổn định
             speedX: Math.random() * 1 - 0.5,
+            speedY: Math.random() * 50 + 50, // Speed in pixels per second
             opacity: 0,
-            blur: isBlurred ? Math.random() * 5 : 0,
+            blur: isBlurred ? Math.random() * 10 : 0,
             rotation: Math.random() * 360,
             rotationSpeed: Math.random() * 2 - 1,
-            lifeProgress: 0,
+            animationProgress: 0
         };
     }
 
-    while (snowflakes.length < maxSnowflakes) {
+    // Initialize snowflakes
+    for (let i = 0; i < maxSnowflakes; i++) {
         snowflakes.push(createSnowflake());
     }
 
-    function drawSnowflakes() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    // Update snowflakes
+    function updateSnowflakes(deltaTime) {
         snowflakes.forEach((snowflake) => {
-            snowflake.lifeProgress += 0.01;
-            if (snowflake.lifeProgress <= 0.5) {
-                snowflake.opacity = snowflake.lifeProgress * 2; // Tăng opacity
-            } else if (snowflake.lifeProgress > 0.5) {
-                snowflake.opacity = 1 - (snowflake.lifeProgress - 0.5) * 2; // Giảm opacity
+            // Update animation progress
+            snowflake.animationProgress += deltaTime / 2000; // Normalize progress to seconds
+
+            // Update opacity with keyframes
+            if (snowflake.animationProgress <= 0.5) {
+                snowflake.opacity = snowflake.animationProgress * 2;
+            } else if (snowflake.animationProgress > 0.5 && snowflake.animationProgress <= 1) {
+                snowflake.opacity = 1 - (snowflake.animationProgress - 0.5) * 2;
             }
 
-            ctx.save();
-            ctx.globalAlpha = snowflake.opacity;
-            ctx.filter = `blur(${snowflake.blur}px)`;
-            ctx.translate(snowflake.x, snowflake.y);
-            ctx.rotate((snowflake.rotation * Math.PI) / 180);
+            // Update position and rotation
+            snowflake.x += snowflake.speedX * deltaTime / 1000; // Normalize to seconds
+            snowflake.y += snowflake.speedY * deltaTime / 1000; 
+            snowflake.rotation += snowflake.rotationSpeed * deltaTime / 1000;
 
+            // Reset snowflake if it moves out of bounds
+            if (snowflake.animationProgress > 1 || snowflake.y > canvas.height + window.scrollY) {
+                Object.assign(snowflake, createSnowflake());
+                snowflake.y = window.scrollY - snowflake.size;
+            }
+        });
+    }
+
+    // Draw snowflakes
+    function drawSnowflakes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        snowflakes.forEach((snowflake) => {
+            ctx.save();
+            ctx.filter = `blur(${snowflake.blur}px)`;
+            ctx.translate(snowflake.x, snowflake.y - window.scrollY); // Adjust for scroll
+            ctx.rotate((snowflake.rotation * Math.PI) / 180);
+            ctx.globalAlpha = snowflake.opacity;
             ctx.drawImage(
                 snowflakeImage,
                 -snowflake.size / 2,
@@ -67,33 +88,23 @@
                 snowflake.size,
                 snowflake.size
             );
-
             ctx.restore();
-
-            snowflake.y += snowflake.speedY;
-            snowflake.x += snowflake.speedX;
-            snowflake.rotation += snowflake.rotationSpeed;
-
-            // Nếu tuyết ra khỏi màn hình, tái tạo lại
-            if (snowflake.y > canvas.height || snowflake.lifeProgress > 1) {
-                Object.assign(snowflake, createSnowflake());
-                snowflake.y = -snowflake.size;
-            }
         });
-
-        requestAnimationFrame(drawSnowflakes);
     }
 
-    snowflakeImage.onload = () => {
+    // Animation loop
+    function animate(timestamp) {
+        const deltaTime = timestamp - lastTimestamp; // Time difference between frames
+        lastTimestamp = timestamp;
+
+        updateSnowflakes(deltaTime);
         drawSnowflakes();
+
+        requestAnimationFrame(animate);
+    }
+
+    // Start animation when image is loaded
+    snowflakeImage.onload = () => {
+        requestAnimationFrame(animate);
     };
-
-    window.addEventListener('scroll', () => {
-        const scrollDelta = lastScrollY - window.scrollY;
-        lastScrollY = window.scrollY;
-
-        snowflakes.forEach((snowflake) => {
-            snowflake.y -= scrollDelta * 0.2; // Điều chỉnh hiệu ứng khi cuộn
-        });
-    });
 })();
