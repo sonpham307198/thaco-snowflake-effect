@@ -19,7 +19,7 @@
             left: 0;
             width: 50px;
             height: 50px;
-            background-image: url('https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png');
+            background-image: url('https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png');
             background-size: cover;
             animation: animationSnow linear infinite;
         }
