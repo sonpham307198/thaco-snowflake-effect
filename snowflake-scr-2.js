@@ -1,5 +1,4 @@
 (function () {
-    // Tạo phần tử canvas
     const canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
     canvas.style.position = 'fixed';
@@ -10,7 +9,11 @@
 
     const ctx = canvas.getContext('2d');
 
-    // Thiết lập kích thước canvas
+    let snowflakes = [];
+    const maxSnowflakes = 50;
+    let lastScrollY = window.scrollY;
+
+    // Resize canvas
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -18,63 +21,52 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Mảng lưu các bông tuyết
-    const snowflakes = [];
-    const maxSnowflakes = 50; // Số lượng bông tuyết
-
-    // Tải ảnh bông tuyết
     const snowflakeImage = new Image();
     snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
 
-    // Tạo một bông tuyết
+    // Create snowflake
     function createSnowflake() {
-        const isBlurred = Math.random() > 0.7; // 30% bông tuyết bị mờ
+        const isBlurred = Math.random() > 0.7; // 30% blurred
         return {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            size: Math.random() * 30 + 10, // Kích thước ngẫu nhiên
+            size: Math.random() * 30 + 10,
+            speedY: Math.random() * 2 + 1, // Reduce speed to 1-3 for stability
             speedX: Math.random() * 1 - 0.5,
-            speedY: Math.random() * 5 + 3, // Tăng tốc độ rơi
             opacity: 0,
-            blur: isBlurred ? Math.random() * 10 : 0, // Độ mờ ngẫu nhiên
-            rotation: Math.random() * 360, // Góc quay ban đầu
-            rotationSpeed: Math.random() * 2 - 1, // Tốc độ quay
-            animationProgress: 0 // Theo dõi tiến trình animation
+            blur: isBlurred ? Math.random() * 5 : 0,
+            rotation: Math.random() * 360,
+            rotationSpeed: Math.random() * 2 - 1,
+            animationProgress: 0,
         };
     }
 
-    // Khởi tạo các bông tuyết ban đầu
-    for (let i = 0; i < maxSnowflakes; i++) {
+    // Populate snowflakes
+    while (snowflakes.length < maxSnowflakes) {
         snowflakes.push(createSnowflake());
     }
 
-    // Vẽ và cập nhật vị trí các bông tuyết
+    // Draw snowflakes
     function drawSnowflakes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         snowflakes.forEach((snowflake) => {
-            // Tăng tiến trình animation
+            // Calculate opacity based on progress
             snowflake.animationProgress += 0.01;
-
-            // Tính toán opacity theo keyframes
             if (snowflake.animationProgress <= 0.5) {
-                snowflake.opacity = snowflake.animationProgress * 2; // 0% -> 100% opacity
-            } else if (snowflake.animationProgress > 0.5 && snowflake.animationProgress <= 1) {
-                snowflake.opacity = 1 - (snowflake.animationProgress - 0.5) * 2; // 100% -> 0% opacity
+                snowflake.opacity = snowflake.animationProgress * 2;
+            } else if (snowflake.animationProgress > 0.5) {
+                snowflake.opacity = 1 - (snowflake.animationProgress - 0.5) * 2;
             }
 
-            // Lưu trạng thái gốc
+            // Save state
             ctx.save();
-
-            // Thiết lập hiệu ứng mờ
+            ctx.globalAlpha = snowflake.opacity;
             ctx.filter = `blur(${snowflake.blur}px)`;
-
-            // Đặt vị trí và xoay hình ảnh
             ctx.translate(snowflake.x, snowflake.y);
             ctx.rotate((snowflake.rotation * Math.PI) / 180);
-            ctx.globalAlpha = snowflake.opacity;
 
-            // Vẽ hình ảnh bông tuyết
+            // Draw snowflake
             ctx.drawImage(
                 snowflakeImage,
                 -snowflake.size / 2,
@@ -83,24 +75,32 @@
                 snowflake.size
             );
 
-            // Khôi phục trạng thái gốc
+            // Restore state
             ctx.restore();
 
-            // Cập nhật vị trí
+            // Update snowflake position
+            const scrollDelta = lastScrollY - window.scrollY;
+            snowflake.y += snowflake.speedY - scrollDelta * 0.05; // Adjust speed during scroll
             snowflake.x += snowflake.speedX;
-            snowflake.y += snowflake.speedY;
             snowflake.rotation += snowflake.rotationSpeed;
 
-            // Nếu animation kết thúc, reset bông tuyết
-            if (snowflake.animationProgress > 1 || snowflake.y > canvas.height) {
+            // Reset snowflake if it moves out of bounds
+            if (snowflake.y > canvas.height || snowflake.animationProgress > 1) {
                 Object.assign(snowflake, createSnowflake());
-                snowflake.y = -snowflake.size; // Đưa về phía trên
+                snowflake.y = -snowflake.size;
             }
         });
 
+        // Smooth animation frame
         requestAnimationFrame(drawSnowflakes);
     }
 
-    // Chờ ảnh tải xong rồi mới bắt đầu
-    snowflakeImage.onload = drawSnowflakes;
+    snowflakeImage.onload = () => {
+        drawSnowflakes();
+    };
+
+    // Update last scroll position after each scroll event
+    window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+    });
 })();
