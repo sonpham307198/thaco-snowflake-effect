@@ -20,32 +20,39 @@
 
     // Mảng lưu các bông tuyết
     const snowflakes = [];
-    const maxSnowflakes = 35; // Số lượng bông tuyết
+    const maxSnowflakes1 = 20; // Số lượng bông tuyết snow-3
+    const maxSnowflakes2 = 15; // Số lượng bông tuyết snow-4
 
     // Tải ảnh bông tuyết
-    const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
+    const snowflakeImage1 = new Image();
+    snowflakeImage1.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
+    const snowflakeImage2 = new Image();
+    snowflakeImage2.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-4.png';
 
     // Tạo một bông tuyết
-    function createSnowflake() {
+    function createSnowflake(image) {
         const isBlurred = Math.random() > 0.7; // 30% bông tuyết bị mờ
         return {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             size: Math.random() * 25 + 10, // Kích thước ngẫu nhiên
             speedX: Math.random() * 1 - 0.5,
-            speedY: Math.random() * 5 + 3, // Tăng tốc độ rơi
+            speedY: Math.random() * 2 + 1, // Tăng tốc độ rơi chậm lại
             opacity: 0,
             blur: isBlurred ? Math.random() * 10 : 0, // Độ mờ ngẫu nhiên
             rotation: Math.random() * 360, // Góc quay ban đầu
             rotationSpeed: Math.random() * 2 - 1, // Tốc độ quay
-            animationProgress: 0 // Theo dõi tiến trình animation
+            animationProgress: 0, // Theo dõi tiến trình animation
+            image: image // Thêm thuộc tính image để xác định loại bông tuyết
         };
     }
 
     // Khởi tạo các bông tuyết ban đầu
-    for (let i = 0; i < maxSnowflakes; i++) {
-        snowflakes.push(createSnowflake());
+    for (let i = 0; i < maxSnowflakes1; i++) {
+        snowflakes.push(createSnowflake(snowflakeImage1));
+    }
+    for (let i = 0; i < maxSnowflakes2; i++) {
+        snowflakes.push(createSnowflake(snowflakeImage2));
     }
 
     // Vẽ và cập nhật vị trí các bông tuyết
@@ -54,7 +61,7 @@
 
         snowflakes.forEach((snowflake) => {
             // Tăng tiến trình animation
-            snowflake.animationProgress += 0.01;
+            snowflake.animationProgress += 0.005; // Giảm tốc độ tăng của animationProgress
 
             // Tính toán opacity theo keyframes
             if (snowflake.animationProgress <= 0.5) {
@@ -76,7 +83,7 @@
 
             // Vẽ hình ảnh bông tuyết
             ctx.drawImage(
-                snowflakeImage,
+                snowflake.image,
                 -snowflake.size / 2,
                 -snowflake.size / 2,
                 snowflake.size,
@@ -91,10 +98,12 @@
             snowflake.y += snowflake.speedY;
             snowflake.rotation += snowflake.rotationSpeed;
 
-            // Nếu animation kết thúc, reset bông tuyết
-            if (snowflake.animationProgress > 1 || snowflake.y > canvas.height) {
-                Object.assign(snowflake, createSnowflake());
+            // Nếu bông tuyết vượt quá đáy màn hình, reset
+            if (snowflake.y > canvas.height) {
+                Object.assign(snowflake, createSnowflake(snowflake.image));
                 snowflake.y = -snowflake.size; // Đưa về phía trên
+            } else if (snowflake.animationProgress > 1) {
+                snowflake.animationProgress = 0; // Reset chỉ animationProgress
             }
         });
 
@@ -102,5 +111,6 @@
     }
 
     // Chờ ảnh tải xong rồi mới bắt đầu
-    snowflakeImage.onload = drawSnowflakes;
+    snowflakeImage1.onload = drawSnowflakes;
+    snowflakeImage2.onload = drawSnowflakes;
 })();
