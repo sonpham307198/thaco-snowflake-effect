@@ -67,7 +67,7 @@
             ctx.save();
 
             // Thiết lập hiệu ứng mờ
-            ctx.filter = blur(${snowflake.blur}px);
+            ctx.filter = `blur(${snowflake.blur}px)`;
 
             // Đặt vị trí và xoay hình ảnh
             ctx.translate(snowflake.x, snowflake.y);
