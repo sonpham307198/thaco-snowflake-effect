@@ -13,7 +13,6 @@
     const maxSnowflakes = 50;
     let lastScrollY = window.scrollY;
 
-    // Resize canvas
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -22,51 +21,45 @@
     resizeCanvas();
 
     const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png';
 
-    // Create snowflake
     function createSnowflake() {
-        const isBlurred = Math.random() > 0.7; // 30% blurred
+        const isBlurred = Math.random() > 0.7;
         return {
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             size: Math.random() * 30 + 10,
-            speedY: Math.random() * 2 + 1, // Reduce speed to 1-3 for stability
+            speedY: Math.random() * 3 + 1, // Tốc độ ổn định
             speedX: Math.random() * 1 - 0.5,
             opacity: 0,
             blur: isBlurred ? Math.random() * 5 : 0,
             rotation: Math.random() * 360,
             rotationSpeed: Math.random() * 2 - 1,
-            animationProgress: 0,
+            lifeProgress: 0,
         };
     }
 
-    // Populate snowflakes
     while (snowflakes.length < maxSnowflakes) {
         snowflakes.push(createSnowflake());
     }
 
-    // Draw snowflakes
     function drawSnowflakes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         snowflakes.forEach((snowflake) => {
-            // Calculate opacity based on progress
-            snowflake.animationProgress += 0.01;
-            if (snowflake.animationProgress <= 0.5) {
-                snowflake.opacity = snowflake.animationProgress * 2;
-            } else if (snowflake.animationProgress > 0.5) {
-                snowflake.opacity = 1 - (snowflake.animationProgress - 0.5) * 2;
+            snowflake.lifeProgress += 0.01;
+            if (snowflake.lifeProgress <= 0.5) {
+                snowflake.opacity = snowflake.lifeProgress * 2; // Tăng opacity
+            } else if (snowflake.lifeProgress > 0.5) {
+                snowflake.opacity = 1 - (snowflake.lifeProgress - 0.5) * 2; // Giảm opacity
             }
 
-            // Save state
             ctx.save();
             ctx.globalAlpha = snowflake.opacity;
             ctx.filter = `blur(${snowflake.blur}px)`;
             ctx.translate(snowflake.x, snowflake.y);
             ctx.rotate((snowflake.rotation * Math.PI) / 180);
 
-            // Draw snowflake
             ctx.drawImage(
                 snowflakeImage,
                 -snowflake.size / 2,
@@ -75,23 +68,19 @@
                 snowflake.size
             );
 
-            // Restore state
             ctx.restore();
 
-            // Update snowflake position
-            const scrollDelta = lastScrollY - window.scrollY;
-            snowflake.y += snowflake.speedY - scrollDelta * 0.05; // Adjust speed during scroll
+            snowflake.y += snowflake.speedY;
             snowflake.x += snowflake.speedX;
             snowflake.rotation += snowflake.rotationSpeed;
 
-            // Reset snowflake if it moves out of bounds
-            if (snowflake.y > canvas.height || snowflake.animationProgress > 1) {
+            // Nếu tuyết ra khỏi màn hình, tái tạo lại
+            if (snowflake.y > canvas.height || snowflake.lifeProgress > 1) {
                 Object.assign(snowflake, createSnowflake());
                 snowflake.y = -snowflake.size;
             }
         });
 
-        // Smooth animation frame
         requestAnimationFrame(drawSnowflakes);
     }
 
@@ -99,8 +88,12 @@
         drawSnowflakes();
     };
 
-    // Update last scroll position after each scroll event
     window.addEventListener('scroll', () => {
+        const scrollDelta = lastScrollY - window.scrollY;
         lastScrollY = window.scrollY;
+
+        snowflakes.forEach((snowflake) => {
+            snowflake.y -= scrollDelta * 0.2; // Điều chỉnh hiệu ứng khi cuộn
+        });
     });
 })();
