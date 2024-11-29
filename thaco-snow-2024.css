@@ -1,0 +1,127 @@
+.mmis-snow-1{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-1.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+  
+}
+
+
+.mmis-snow-2{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-2.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-3{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-3.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-4{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-4.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-5{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-5.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-6{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-6.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-7{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-7.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-8{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-8.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+
+.mmis-snow-9{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-9.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+.mmis-snow-0{
+    position: absolute; pointer-events: none;
+    top:0;
+    left:0;
+    width:50px;
+    height:50px;
+    background-image: url(snow-10.png);
+    background-size: contain;     background-repeat: no-repeat;
+    animation: animationSnow 4s ease-in-out infinite;
+}
+@keyframes animationSnow{
+    0%{
+        transform: translate(0,0);
+        opacity: 0;
+    }
+    30%{
+        opacity: 1;
+    }
+      60%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: translate(100px,60vh) rotate(120deg);
+    }
+}
+1
