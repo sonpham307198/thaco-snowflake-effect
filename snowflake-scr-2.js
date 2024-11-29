@@ -34,7 +34,7 @@
             y: Math.random() * canvas.height,
             size: Math.random() * 25 + 10, // Kích thước ngẫu nhiên
             speedX: Math.random() * 1 - 0.5,
-            speedY: Math.random() * 6 + 3, // Tăng tốc độ rơi
+            speedY: Math.random() * 3 + 3, // Tăng tốc độ rơi
             opacity: 0,
             blur: isBlurred ? Math.random() * 10 : 0, // Độ mờ ngẫu nhiên
             rotation: Math.random() * 360, // Góc quay ban đầu
