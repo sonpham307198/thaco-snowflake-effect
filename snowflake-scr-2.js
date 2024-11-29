@@ -20,7 +20,7 @@
 
     // Mảng lưu các bông tuyết
     const snowflakes = [];
-    const maxSnowflakes = 50; // Số lượng bông tuyết
+    const maxSnowflakes = 35; // Số lượng bông tuyết
 
     // Tải ảnh bông tuyết
     const snowflakeImage = new Image();
