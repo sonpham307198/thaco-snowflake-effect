@@ -14,7 +14,7 @@
 
     // Load snowflake image
     const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png';
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
 
     // Resize canvas
     function resizeCanvas() {
