@@ -14,7 +14,7 @@
 
     // Load snowflake image
     const snowflakeImage = new Image();
-    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-3.png';
+    snowflakeImage.src = 'https://sonpham307198.github.io/thaco-snowflake-effect/snow-2.png';
 
     // Resize canvas
     function resizeCanvas() {
@@ -29,7 +29,7 @@
         const isBlurred = Math.random() > 0.7;
         return {
             x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height + window.scrollY,
+            y: Math.random() * canvas.height,
             size: Math.random() * 30 + 10,
             speedX: Math.random() * 1 - 0.5,
             speedY: Math.random() * 50 + 50, // Speed in pixels per second
@@ -50,7 +50,7 @@
     function updateSnowflakes(deltaTime) {
         snowflakes.forEach((snowflake) => {
             // Update animation progress
-            snowflake.animationProgress += deltaTime / 2000; // Normalize progress to seconds
+            snowflake.animationProgress += deltaTime / 2000;
 
             // Update opacity with keyframes
             if (snowflake.animationProgress <= 0.5) {
@@ -60,14 +60,14 @@
             }
 
             // Update position and rotation
-            snowflake.x += snowflake.speedX * deltaTime / 1000; // Normalize to seconds
-            snowflake.y += snowflake.speedY * deltaTime / 1000; 
+            snowflake.x += snowflake.speedX * deltaTime / 1000;
+            snowflake.y += snowflake.speedY * deltaTime / 1000;
             snowflake.rotation += snowflake.rotationSpeed * deltaTime / 1000;
 
             // Reset snowflake if it moves out of bounds
-            if (snowflake.animationProgress > 1 || snowflake.y > canvas.height + window.scrollY) {
+            if (snowflake.animationProgress > 1 || snowflake.y > canvas.height) {
                 Object.assign(snowflake, createSnowflake());
-                snowflake.y = window.scrollY - snowflake.size;
+                snowflake.y = -snowflake.size; // Reset to top of the screen
             }
         });
     }
@@ -78,7 +78,7 @@
         snowflakes.forEach((snowflake) => {
             ctx.save();
             ctx.filter = `blur(${snowflake.blur}px)`;
-            ctx.translate(snowflake.x, snowflake.y - window.scrollY); // Adjust for scroll
+            ctx.translate(snowflake.x, snowflake.y);
             ctx.rotate((snowflake.rotation * Math.PI) / 180);
             ctx.globalAlpha = snowflake.opacity;
             ctx.drawImage(
@@ -94,7 +94,7 @@
 
     // Animation loop
     function animate(timestamp) {
-        const deltaTime = timestamp - lastTimestamp; // Time difference between frames
+        const deltaTime = timestamp - lastTimestamp;
         lastTimestamp = timestamp;
 
         updateSnowflakes(deltaTime);
