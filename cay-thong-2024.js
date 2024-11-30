@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function(){
+    
+let container = document.body;
     // Tạo một thẻ img
     let img = document.createElement("img");
     img.src = "Cay-thong-noel-2024.gif"; // Đường dẫn tới ảnh
