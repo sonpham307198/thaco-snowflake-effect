@@ -6,11 +6,11 @@ $(document).ready(function () {
     let img = document.createElement('img');
 
     // Thiết lập thuộc tính cho ảnh
-    img.src = "Cay-thong-noel-2024.gif"; // Đường dẫn ảnh từ hosting
+    img.src = "https://sonpham307198.github.io/thaco-snowflake-effect/Cay-thong-noel-2024.gif"; // Đường dẫn ảnh từ hosting
     img.alt = "Cây thông Noel 2024";
     img.style.position = "fixed"; // Gắn cố định
     img.style.bottom = "10px"; // Cách đáy 10px
-    img.style.right = "10px"; // Cách phải 10px
+    img.style.left = "10px"; // Cách trái 10px
     img.style.width = "250px"; // Chiều ngang ảnh
     img.style.zIndex = 9999; // Hiển thị trên cùng
 
