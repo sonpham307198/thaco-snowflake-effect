@@ -11,8 +11,9 @@ $(document).ready(function () {
     img.style.position = "fixed"; // Gắn cố định
     img.style.bottom = "10px"; // Cách đáy 10px
     img.style.left = "10px"; // Cách trái 10px
-    img.style.width = "250px"; // Chiều ngang ảnh
+    img.style.width = "150px"; // Chiều ngang ảnh
     img.style.zIndex = 9999; // Hiển thị trên cùng
+    img.style.pointerEvents = "none"; // Không làm ảnh hưởng đến thao tác của người dùng
 
     // Gắn ảnh vào body
     container.appendChild(img);
