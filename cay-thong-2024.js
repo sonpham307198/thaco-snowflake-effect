@@ -1,18 +1,19 @@
-$(document).ready(function(){
-    
-let container = document.body;
-    // Tạo một thẻ img
-    let img = document.createElement("img");
-    img.src = "Cay-thong-noel-2024.gif"; // Đường dẫn tới ảnh
+$(document).ready(function () {
+    // Chọn container là body của trang
+    let container = document.body;
+
+    // Tạo phần tử ảnh
+    let img = document.createElement('img');
+
+    // Thiết lập thuộc tính cho ảnh
+    img.src = "Cay-thong-noel-2024.gif"; // Đường dẫn ảnh từ hosting
     img.alt = "Cây thông Noel 2024";
-    img.style.position = "fixed";
-    img.style.bottom = "20px"; // Cách mép dưới 20px
-    img.style.right = "20px"; // Cách mép phải 20px
-    img.style.width = "250px"; // Chiều ngang của ảnh
-    img.style.height = "auto"; // Tự động giữ tỷ lệ theo chiều ngang
-    img.style.zIndex = "99999"; // Đặt trên các phần tử khác
-    img.style.pointerEvents = "none"; // Không làm ảnh hưởng đến thao tác của người dùng
+    img.style.position = "fixed"; // Gắn cố định
+    img.style.bottom = "10px"; // Cách đáy 10px
+    img.style.right = "10px"; // Cách phải 10px
+    img.style.width = "250px"; // Chiều ngang ảnh
+    img.style.zIndex = 9999; // Hiển thị trên cùng
 
     // Gắn ảnh vào body
-    document.body.appendChild(img);
+    container.appendChild(img);
 });
