@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sliderItem.innerHTML = `
                 <div>
                     <video autoplay muted playsinline id="intro-video" style="width: 100%; height: auto; z-index: -11;" loop>
-                        <source src="https://thacoauto.vn/storage/banner-trang-chu/banner-thaco-auto-giang-sinh-2024-7.mp4" type="video/mp4">
+                        <source src="https://thacoauto.vn/storage/banner-trang-chu/banner-thaco-auto-giang-sinh-2024-8.mp4" type="video/mp4">
                     </video>
                 </div>
             `;
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sliderItemAlt.innerHTML = `
                 <div>
                     <video autoplay muted playsinline id="intro-video" style="width: 100%; height: auto; z-index: -11;" loop>
-                        <source src="https://thacoauto.vn/storage/banner-cttt/banner-thaco-auto-tt-giang-sinh-2024-7.mp4" type="video/mp4">
+                        <source src="https://thacoauto.vn/storage/banner-cttt/banner-thaco-auto-tt-giang-sinh-2024-8.mp4" type="video/mp4">
                     </video>
                 </div>
             `;
