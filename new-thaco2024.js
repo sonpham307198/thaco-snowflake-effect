@@ -1,57 +1,47 @@
-var cssId = 'myCss';  // you could encode the css path itself to generate id..
-if (!document.getElementById(cssId))
-{
-    var head  = document.getElementsByTagName('head')[0];
-    var link  = document.createElement('link');
-    link.id   = cssId;
-    link.rel  = 'stylesheet';
-    link.type = 'text/css';
-    link.href = 'https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css';
-    link.media = 'all';
-    head.appendChild(link);
-}
- });
+$(document).ready(function() {
+    // Tạo một div chứa hiệu ứng tuyết
+    let snowContainer = document.createElement('div');
+    snowContainer.id = 'snow-container';
+    snowContainer.style.position = 'fixed';
+    snowContainer.style.top = '0';
+    snowContainer.style.left = '0';
+    snowContainer.style.width = '100vw';
+    snowContainer.style.height = '100vh';
+    snowContainer.style.pointerEvents = 'none'; // Cho phép click xuyên qua
+    snowContainer.style.overflow = 'hidden'; // Ngăn không cho bông tuyết vượt ra ngoài màn hình
+    document.body.appendChild(snowContainer);
 
-// Sau đó, chạy tiếp các đoạn mã tạo hiệu ứng bông tuyết
-jQuery(document).ready(function () {
-  const snowflakeCount = 30; // Số lượng bông tuyết
-  const snowContainer = document.createElement('div');
-  snowContainer.id = 'snow-container';
-  snowContainer.style.position = 'fixed';
-  snowContainer.style.top = '0';
-  snowContainer.style.left = '0';
-  snowContainer.style.width = '100%';
-  snowContainer.style.height = '100%';
-  snowContainer.style.pointerEvents = 'none';
-  snowContainer.style.overflow = 'hidden';
-  snowContainer.style.zIndex = '9999';
-  document.body.appendChild(snowContainer);
+    // Số lượng bông tuyết
+    let count = 50;
+    for (let i = 0; i < count; i++) {
+        let leftSnow = Math.floor(Math.random() * snowContainer.clientWidth);
+        let topSnow = Math.floor(Math.random() * snowContainer.clientHeight);
+        let widthSnow = Math.floor(Math.random() * 25) + 10;
+        let timeSnow = Math.floor(Math.random() * 5) + 5;
+        let blurSnow = Math.floor(Math.random() * 10) / 3;
+        let id = Math.floor(Math.random() * 10);
 
-  // Danh sách ảnh PNG cho bông tuyết
-  const snowflakeImages = [
-    'https://thaco.link/snow/snow-1.png',
-    'https://thaco.link/snow/snow-2.png',
-    'https://thaco.link/snow/snow-3.png',
-    'https://thaco.link/snow/snow-4.png',
-    'https://thaco.link/snow/snow-5.png',
-  ];
+        let div = document.createElement('div');
+        div.classList.add('mmis-snow-' + id);
+        div.style.left = leftSnow + 'px';
+        div.style.top = topSnow + 'px';
+        div.style.width = widthSnow + 'px';
+        div.style.height = widthSnow + 'px';
+        div.style.animationDuration = timeSnow + 's';
+        div.style.filter = "blur(" + blurSnow + "px)";
+        snowContainer.appendChild(div);
+    }
 
-  // Tạo các bông tuyết
-  for (let i = 0; i < snowflakeCount; i++) {
-    const snowflake = document.createElement('div');
-    snowflake.className = 'snowflake';
-
-    const img = document.createElement('img');
-    img.src = snowflakeImages[Math.floor(Math.random() * snowflakeImages.length)];
-
-    // Gắn các CSS Variables để tuỳ chỉnh
-    snowflake.style.setProperty('--size', `${Math.random() * 20 + 10}px`); // Kích thước
-    snowflake.style.setProperty('--speed', `${Math.random()}`); // Tốc độ rơi
-    snowflake.style.setProperty('--blur', `${Math.random() * 3}px`); // Độ mờ
-    snowflake.style.setProperty('--opacity', `${Math.random()}`); // Độ trong suốt
-    snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
-
-    snowflake.appendChild(img);
-    snowContainer.appendChild(snowflake);
-  }
+    // Thêm file CSS nếu chưa có
+    var cssId = 'myCss';
+    if (!document.getElementById(cssId)) {
+        var head = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://thaco.link/snow/style25.css';
+        link.media = 'all';
+        head.appendChild(link);
+    }
 });
