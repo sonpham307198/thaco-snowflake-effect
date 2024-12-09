@@ -1,14 +1,16 @@
-// Tải file CSS khi chạy JavaScript
-function loadCSS(filename) {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = 'https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'; // Đường dẫn đến file CSS
-  document.head.appendChild(link);
+var cssId = 'myCss';  // you could encode the css path itself to generate id..
+if (!document.getElementById(cssId))
+{
+    var head  = document.getElementsByTagName('head')[0];
+    var link  = document.createElement('link');
+    link.id   = cssId;
+    link.rel  = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css';
+    link.media = 'all';
+    head.appendChild(link);
 }
-
-// Gọi file CSS trước khi thực hiện hiệu ứng
-loadCSS('https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'); // Thay bằng đường dẫn file CSS của bạn
+ });
 
 // Sau đó, chạy tiếp các đoạn mã tạo hiệu ứng bông tuyết
 jQuery(document).ready(function () {
