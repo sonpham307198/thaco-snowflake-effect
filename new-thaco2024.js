@@ -1,89 +1,60 @@
+// Tải file CSS khi chạy JavaScript
+function loadCSS(filename) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = filename; // Đường dẫn đến file CSS
+  document.head.appendChild(link);
+}
+
+// Gọi file CSS trước khi thực hiện hiệu ứng
+loadCSS('https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'); // Thay bằng đường dẫn file CSS của bạn
+
+// Sau đó, chạy tiếp các đoạn mã tạo hiệu ứng bông tuyết
 jQuery(document).ready(function () {
-  const canvas2 = document.createElement('canvas');
-  canvas2.id = 'canvas-2';
-  canvas2.style.position = 'fixed';
-  canvas2.style.top = '0';
-  canvas2.style.left = '0';
-  canvas2.style.zIndex = '999999';
-  canvas2.style.pointerEvents = 'none';
-  canvas2.style.willChange = 'transform, opacity'; // Tối ưu GPU
-  document.body.appendChild(canvas2);
+  const snowflakeCount = 30; // Số lượng bông tuyết
+  const snowContainer = document.createElement('div');
+  snowContainer.id = 'snow-container';
+  snowContainer.style.position = 'fixed';
+  snowContainer.style.top = '0';
+  snowContainer.style.left = '0';
+  snowContainer.style.width = '100%';
+  snowContainer.style.height = '100%';
+  snowContainer.style.pointerEvents = 'none';
+  snowContainer.style.overflow = 'hidden';
+  snowContainer.style.zIndex = '9999';
+  document.body.appendChild(snowContainer);
 
-  const ctx2 = canvas2.getContext('2d');
-  canvas2.width = window.innerWidth;
-  canvas2.height = window.innerHeight;
+  // Danh sách ảnh PNG cho bông tuyết
+  const snowflakeImages = [
+    'https://thaco.link/snow/snow-1.png',
+    'https://thaco.link/snow/snow-2.png',
+    'https://thaco.link/snow/snow-3.png',
+    'https://thaco.link/snow/snow-4.png',
+    'https://thaco.link/snow/snow-5.png',
+    'https://thaco.link/snow/snow-6.png',
+    'https://thaco.link/snow/snow-7.png',
+    'https://thaco.link/snow/snow-8.png',
+    'https://thaco.link/snow/snow-9.png',
+    'https://thaco.link/snow/snow-10.png',
+  ];
 
-  const snowflakeImages = [];
-  for (let i = 1; i <= 10; i++) {
-    const img = new Image();
-    img.src = `https://thaco.link/snow/snow-${i}.png`;
-    snowflakeImages.push(img);
+  // Tạo các bông tuyết
+  for (let i = 0; i < snowflakeCount; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+
+    const img = document.createElement('img');
+    img.src = snowflakeImages[Math.floor(Math.random() * snowflakeImages.length)];
+
+    // Gắn các CSS Variables để tuỳ chỉnh
+    snowflake.style.setProperty('--size', `${Math.random() * 20 + 10}px`); // Kích thước
+    snowflake.style.setProperty('--speed', `${Math.random()}`); // Tốc độ rơi
+    snowflake.style.setProperty('--blur', `${Math.random() * 3}px`); // Độ mờ
+    snowflake.style.setProperty('--opacity', `${Math.random()}`); // Độ trong suốt
+    snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
+
+    snowflake.appendChild(img);
+    snowContainer.appendChild(snowflake);
   }
-
-  const snowflakes = [];
-  const snowCount = 25; // Giảm số lượng bông tuyết
-  for (let i = 0; i < snowCount; i++) {
-    const img = snowflakeImages[Math.floor(Math.random() * snowflakeImages.length)];
-    snowflakes.push({
-      x: Math.random() * canvas2.width,
-      y: Math.random() * canvas2.height,
-      size: Math.random() * 20 + 20, // Giảm kích thước bông tuyết
-      speedY: Math.random() * 3 + 2, // Tăng tốc độ rơi
-      speedX: Math.random() * 1 - 0.5,
-      rotation: Math.random() * 360,
-      rotationSpeed: Math.random() * 2 - 1,
-      opacityCycle: Math.random() * 6 + 4,
-      opacityTime: Math.random() * 10,
-      blur: Math.floor(Math.random() * 10) / 3,
-      img: img
-    });
-  }
-
-  let lastTimestamp = performance.now();
-  let frameCount = 0;
-
-  function updateCanvas2(timestamp) {
-    const deltaTime = timestamp - lastTimestamp;
-    lastTimestamp = timestamp;
-    frameCount++;
-
-    if (frameCount % 2 === 0) { // Giới hạn cập nhật khung hình
-      ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-      snowflakes.forEach((snowflake) => {
-        snowflake.y += snowflake.speedY;
-        snowflake.x += snowflake.speedX;
-        snowflake.rotation += snowflake.rotationSpeed;
-
-        if (snowflake.y > canvas2.height) {
-          snowflake.y = -snowflake.size;
-          snowflake.x = Math.random() * canvas2.width;
-        }
-        if (snowflake.x > canvas2.width || snowflake.x < -snowflake.size) {
-          snowflake.x = Math.random() * canvas2.width;
-        }
-
-        ctx2.save();
-        ctx2.filter = `blur(${snowflake.blur}px)`;
-        ctx2.globalAlpha = Math.sin((performance.now() / 1000) % Math.PI); // Opacity luân phiên
-        ctx2.translate(snowflake.x, snowflake.y);
-        ctx2.rotate((snowflake.rotation * Math.PI) / 180);
-        ctx2.drawImage(
-          snowflake.img,
-          -snowflake.size / 2,
-          -snowflake.size / 2,
-          snowflake.size,
-          snowflake.size
-        );
-        ctx2.restore();
-      });
-    }
-    requestAnimationFrame(updateCanvas2);
-  }
-
-  updateCanvas2(lastTimestamp);
-
-  window.addEventListener('resize', function () {
-    canvas2.width = window.innerWidth;
-    canvas2.height = window.innerHeight;
-  });
 });
