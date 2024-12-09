@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    // Tạo một div chứa hiệu ứng tuyết
+jQuery(document).ready(function () {
+    // Tạo container để chứa các bông tuyết
     let snowContainer = document.createElement('div');
     snowContainer.id = 'snow-container';
     snowContainer.style.position = 'fixed';
@@ -8,31 +8,28 @@ $(document).ready(function() {
     snowContainer.style.width = '100vw';
     snowContainer.style.height = '100vh';
     snowContainer.style.pointerEvents = 'none'; // Cho phép click xuyên qua
-    snowContainer.style.overflow = 'hidden'; // Ngăn không cho bông tuyết vượt ra ngoài màn hình
+    snowContainer.style.overflow = 'hidden'; // Giữ các bông tuyết trong màn hình
+    snowContainer.style.zIndex = '999999';
     document.body.appendChild(snowContainer);
 
-    // Số lượng bông tuyết
-    let count = 50;
+    // Tạo các bông tuyết
+    let count = 50; // Số lượng bông tuyết
     for (let i = 0; i < count; i++) {
-        let leftSnow = Math.floor(Math.random() * snowContainer.clientWidth);
-        let topSnow = Math.floor(Math.random() * snowContainer.clientHeight);
-        let widthSnow = Math.floor(Math.random() * 25) + 10;
-        let timeSnow = Math.floor(Math.random() * 5) + 5;
-        let blurSnow = Math.floor(Math.random() * 10) / 3;
-        let id = Math.floor(Math.random() * 10);
-
-        let div = document.createElement('div');
-        div.classList.add('mmis-snow-' + id);
-        div.style.left = leftSnow + 'px';
-        div.style.top = topSnow + 'px';
-        div.style.width = widthSnow + 'px';
-        div.style.height = widthSnow + 'px';
-        div.style.animationDuration = timeSnow + 's';
-        div.style.filter = "blur(" + blurSnow + "px)";
-        snowContainer.appendChild(div);
+        let snowflake = document.createElement('div');
+        let id = Math.floor(Math.random() * 10); // Chọn ảnh ngẫu nhiên từ 0-9
+        snowflake.className = `mmis-snow-${id}`;
+        snowflake.style.position = 'absolute';
+        snowflake.style.top = `${Math.random() * 100}vh`; // Vị trí ngẫu nhiên
+        snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngẫu nhiên
+        snowflake.style.width = `${Math.random() * 25 + 10}px`; // Kích thước ngẫu nhiên
+        snowflake.style.height = snowflake.style.width;
+        snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thời gian rơi ngẫu nhiên
+        snowflake.style.animationDelay = `${Math.random() * 5}s`; // Độ trễ ngẫu nhiên
+        snowflake.style.zIndex = '999999';
+        snowContainer.appendChild(snowflake);
     }
 
-    // Thêm file CSS nếu chưa có
+    // Thêm CSS nếu chưa có
     var cssId = 'myCss';
     if (!document.getElementById(cssId)) {
         var head = document.getElementsByTagName('head')[0];
