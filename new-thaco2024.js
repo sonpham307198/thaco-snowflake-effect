@@ -1,16 +1,21 @@
-// Tải file CSS khi chạy JavaScript
-function loadCSS(filename) {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = filename; // Đường dẫn đến file CSS
-  document.head.appendChild(link);
+// Hàm để gọi file CSS
+function loadCSS(cssId, cssPath) {
+  if (!document.getElementById(cssId)) {
+    const head = document.getElementsByTagName('head')[0];
+    const link = document.createElement('link');
+    link.id = cssId;
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'; // Đường dẫn tới file CSS
+    link.media = 'all';
+    head.appendChild(link);
+  }
 }
 
-// Gọi file CSS trước khi thực hiện hiệu ứng
-loadCSS('https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'); // Thay bằng đường dẫn file CSS của bạn
+// Gọi file CSS trước khi chạy hiệu ứng
+loadCSS('snowEffectCSS', 'https://sonpham307198.github.io/thaco-snowflake-effect/new-thaco2024.css'); // Thay bằng đường dẫn file CSS của bạn
 
-// Sau đó, chạy tiếp các đoạn mã tạo hiệu ứng bông tuyết
+// Hiệu ứng bông tuyết (thêm vào sau khi gọi file CSS)
 jQuery(document).ready(function () {
   const snowflakeCount = 30; // Số lượng bông tuyết
   const snowContainer = document.createElement('div');
@@ -32,11 +37,6 @@ jQuery(document).ready(function () {
     'https://thaco.link/snow/snow-3.png',
     'https://thaco.link/snow/snow-4.png',
     'https://thaco.link/snow/snow-5.png',
-    'https://thaco.link/snow/snow-6.png',
-    'https://thaco.link/snow/snow-7.png',
-    'https://thaco.link/snow/snow-8.png',
-    'https://thaco.link/snow/snow-9.png',
-    'https://thaco.link/snow/snow-10.png',
   ];
 
   // Tạo các bông tuyết
