@@ -15,25 +15,31 @@ jQuery(document).ready(function () {
     // Số lượng bông tuyết
     let count = 50;
     for (let i = 0; i < count; i++) {
+        let leftSnow = Math.floor(Math.random() * container.clientWidth);
+        let topSnow = Math.floor(Math.random() * container.clientHeight);
+        let widthSnow = Math.floor(Math.random() * 25)+10;
+        let timeSnow = Math.floor((Math.random() * 5) + 5);
+        let blurSnow = Math.floor(Math.random() * 10); blurSnow=blurSnow/3;
+        let id=Math.floor(Math.random() * 10);
+        
         let snowflake = document.createElement('div');
-        let id = Math.floor(Math.random() * 10); // Chọn ảnh ngẫu nhiên từ 0-9
-        snowflake.className = `mmis-snow-${id}`;
+        div.classList.add('mmis-snow-'+id);
         snowflake.style.position = 'absolute';
-        snowflake.style.top = `${Math.random() * 100}vh`; // Xuất hiện ở vị trí dọc ngẫu nhiên trên màn hình
-        snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
-        snowflake.style.width = `${Math.random() * 20 + 30}px`; // Kích thước ngẫu nhiên
-        snowflake.style.height = snowflake.style.width;
-        snowflake.style.animationDuration = `${Math.random() * 3 + 4}s`; // Thời gian rơi ngẫu nhiên
-        snowflake.style.animationDelay = `${Math.random() * 2}s`; // Độ trễ ngẫu nhiên
-        snowflake.style.zIndex = '999999';
+        snowflake.style.left = leftSnow + 'px';
+        snowflake.style.top = topSnow + 'px';
+        snowflake.style.zIndex = 999999;
+        snowflake.style.width = widthSnow + 'px';
+        snowflake.style.height = widthSnow + 'px';
+        snowflake.style.animationDuration = timeSnow + 's';
+        snowflake.style.filter = "blur(" + blurSnow + "px)";
         snowContainer.appendChild(snowflake);
     }
 
     // Thêm CSS nếu chưa có
-    let cssId = 'myCss';
+    var cssId = 'myCss';
     if (!document.getElementById(cssId)) {
-        let head = document.getElementsByTagName('head')[0];
-        let link = document.createElement('link');
+        var head = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
         link.id = cssId;
         link.rel = 'stylesheet';
         link.type = 'text/css';
