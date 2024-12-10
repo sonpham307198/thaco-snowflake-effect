@@ -15,8 +15,8 @@ jQuery(document).ready(function () {
     // Số lượng bông tuyết
     let count = 50;
     for (let i = 0; i < count; i++) {
-        let leftSnow = Math.floor(Math.random() * container.clientWidth);
-        let topSnow = Math.floor(Math.random() * container.clientHeight);
+        let leftSnow = Math.floor(Math.random() * snowContainer.clientWidth);
+        let topSnow = Math.floor(Math.random() * snowContainer.clientHeight);
         let widthSnow = Math.floor(Math.random() * 25)+10;
         let timeSnow = Math.floor((Math.random() * 5) + 5);
         let blurSnow = Math.floor(Math.random() * 10); blurSnow=blurSnow/3;
