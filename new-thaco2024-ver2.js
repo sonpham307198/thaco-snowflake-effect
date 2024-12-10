@@ -19,12 +19,12 @@ jQuery(document).ready(function () {
         let id = Math.floor(Math.random() * 10); // Chọn ảnh ngẫu nhiên từ 0-9
         snowflake.className = `mmis-snow-${id}`;
         snowflake.style.position = 'absolute';
-        snowflake.style.top = `${Math.random() * -100}vh`; // Đặt vị trí bắt đầu ngoài màn hình để không bị đứng yên
+        snowflake.style.top = `${Math.random() * 100}vh`; // Xuất hiện ở vị trí dọc ngẫu nhiên trên màn hình
         snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
         snowflake.style.width = `${Math.random() * 20 + 30}px`; // Kích thước ngẫu nhiên
         snowflake.style.height = snowflake.style.width;
         snowflake.style.animationDuration = `${Math.random() * 3 + 4}s`; // Thời gian rơi ngẫu nhiên
-        snowflake.style.animationDelay = `${Math.random() * 1}s`; // Độ trễ ngẫu nhiên nhỏ để tránh đứng im
+        snowflake.style.animationDelay = `${Math.random() * 2}s`; // Độ trễ ngẫu nhiên
         snowflake.style.zIndex = '999999';
         snowContainer.appendChild(snowflake);
     }
